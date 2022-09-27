@@ -6,6 +6,8 @@ import * as dotenv from 'dotenv';
 
 import express from 'express';
 
+import cors from 'cors';
+
 import { getBusinessHandler } from './requestHandlers/getBusinessHandler';
 
 dotenv.config();
@@ -13,6 +15,7 @@ dotenv.config();
 const { PORT } = process.env;
 
 const expressApp = express();
+expressApp.use(cors());
 expressApp.use(express.static(path.join(__dirname, 'public')));
 expressApp.get('/api/business/:id', getBusinessHandler);
 
