@@ -8,11 +8,6 @@ type Props = {
   reviews: Review[];
 };
 
-// {
-//   taste: 'POSITIVE',
-//       amount: 107,
-// },
-
 export const RadarChart = ({ reviews }: Props) => {
   const rateGroups = reviews.reduce(
     (acc, review) => {
@@ -50,7 +45,7 @@ export const RadarChart = ({ reviews }: Props) => {
         dotSize={10}
         dotColor={{ theme: 'background' }}
         dotBorderWidth={2}
-        colors={{ scheme: 'nivo' }}
+        colors={{ scheme: 'paired' }}
         blendMode="multiply"
         motionConfig="wobbly"
       />

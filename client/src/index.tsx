@@ -12,8 +12,6 @@ if (process.env.REACT_APP_MOCKS === 'enabled') {
   worker.start();
 }
 
-console.log(process.env, process.env.NODE_MOCKS);
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
