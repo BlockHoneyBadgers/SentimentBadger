@@ -23,6 +23,7 @@ Local `.env` file:
 
 ```
 PORT=3456
+SERP_API_KEY={your SerpApi Key}
 ```
 
 ## `/client`
