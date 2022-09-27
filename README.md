@@ -2,6 +2,8 @@
 
 ## `/server`
 
+Node version: v16.13.0
+
 ### Running the server
 
 Start the local server:
