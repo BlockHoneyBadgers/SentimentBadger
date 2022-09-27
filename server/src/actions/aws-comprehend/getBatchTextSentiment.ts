@@ -24,15 +24,15 @@ export const getBatchTextSentiment = async (texts: string[]) => {
     },
   });
 
-  const sentiments: string[] = [];
-
   try {
-    while (texts) {
-      const batch = texts.splice(0, 25);
+    const sentiments: string[] = [];
+
+    while (texts.length) {
+      const batchPage = texts.splice(0, 25);
 
       const params: BatchDetectSentimentCommandInput = {
         LanguageCode: LanguageCode.EN,
-        TextList: batch,
+        TextList: batchPage,
       };
 
       const command = new BatchDetectSentimentCommand(params);
@@ -40,11 +40,10 @@ export const getBatchTextSentiment = async (texts: string[]) => {
       // eslint-disable-next-line no-await-in-loop
       const data = await client.send(command);
 
-      if (!data.ResultList) {
+      if (data.ResultList) {
         sentiments.push(...data.ResultList.map((item) => item.Sentiment));
       }
     }
-
     return sentiments;
   } catch (error) {
     console.error(error);
