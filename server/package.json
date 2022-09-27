@@ -9,7 +9,7 @@
     "build": "tsc",
     "start": "node dist",
     "start:dev": "ts-node-dev --files --respawn --clear --watch 'src/**/*.ts' src/index.ts",
-    "check-types": "tsc --noEmit src/index.ts",
+    "check-types": "tsc --noEmit",
     "lint": "eslint . --ext .ts --cache  --parser-options=project:tsconfig.json"
   },
   "devDependencies": {
