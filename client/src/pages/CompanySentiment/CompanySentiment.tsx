@@ -58,7 +58,7 @@ export const CompanySentiment = () => {
       </Grid>
       <Grid item xs={12} md={5}>
         <Card variant="outlined">
-          <CardHeader title="Number of stars given for the contractor" />
+          <CardHeader title="Google ratings distribution" />
           <CardContent>
             <BarChart reviews={reviews} />
           </CardContent>
@@ -66,7 +66,7 @@ export const CompanySentiment = () => {
       </Grid>
       <Grid item xs={12} md={5}>
         <Card variant="outlined">
-          <CardHeader title="Reviews sentyment chart" />
+          <CardHeader title="Reviews sentiment chart" />
           <CardContent>
             <RadarChart reviews={reviews} />
           </CardContent>
@@ -87,28 +87,29 @@ export const CompanySentiment = () => {
                 </TableHead>
                 <TableBody>
                   {reviews.map(
-                    ({ content, sentimentScore, googleRating }, index) => (
-                      <TableRow
-                        key={index}
-                        sx={{
-                          '&:last-child td, &:last-child th': { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          <Rating
-                            name="read-only"
-                            value={googleRating}
-                            readOnly
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{sentimentScore}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography>{content}</Typography>
-                        </TableCell>
-                      </TableRow>
-                    ),
+                    ({ content, sentimentScore, googleRating }, index) =>
+                      content ? (
+                        <TableRow
+                          key={index}
+                          sx={{
+                            '&:last-child td, &:last-child th': { border: 0 },
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            <Rating
+                              name="read-only"
+                              value={googleRating}
+                              readOnly
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Typography>{sentimentScore}</Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography>{content}</Typography>
+                          </TableCell>
+                        </TableRow>
+                      ) : null,
                   )}
                 </TableBody>
               </Table>

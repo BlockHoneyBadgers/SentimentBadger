@@ -6,11 +6,13 @@ import reportWebVitals from 'common/utils/reportWebVitals';
 
 import App from 'app/App';
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.REACT_APP_MOCKS === 'enabled') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { worker } = require('mocks/browser');
   worker.start();
 }
+
+console.log(process.env, process.env.NODE_MOCKS);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

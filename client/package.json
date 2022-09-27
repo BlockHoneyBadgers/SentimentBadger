@@ -33,6 +33,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:mocks": "env REACT_APP_MOCKS=enabled react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
