@@ -1,0 +1,94 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "jest": true
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "project": "server/tsconfig.json",
+    "warnOnUnsupportedTypeScriptVersion": false
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/prefer-interface": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-parameter-properties": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "ignoreRestSiblings": true }
+    ],
+    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-use-before-define": "error",
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling", "index"]
+        ],
+        "newlines-between": "always-and-inside-groups"
+      }
+    ],
+    "class-methods-use-this": "off",
+    "camelcase": "off",
+    "lines-between-class-members": "off",
+    "no-empty-function": "off",
+    "no-console": "error",
+    "no-undef": "error",
+    "no-shadow": "off",
+    "no-use-before-define": "off",
+    "no-underscore-dangle": "off",
+    "no-useless-constructor": "off",
+    "no-restricted-syntax": "off",
+    "consistent-return": "off",
+    "guard-for-in": "off",
+    "no-unused-expressions": [2, { "allowShortCircuit": true }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".ts"]
+      }
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts"]
+    }
+  }
+}
