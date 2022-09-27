@@ -1,8 +1,13 @@
 import { Request, Response } from 'express';
 
-import { GetBusinessHandlerResponse } from './responses/getBusinessHandlerResponse';
+import {
+  GetBusinessHandlerResponse,
+  Review,
+} from './responses/getBusinessHandlerResponse';
 import { getBusinessReviews } from '../actions/google/getBusinessReviews';
 import { GetBusinessReviewsResponse } from '../actions/google/responses/GetBusinessReviewsResponse';
+import { getBatchTextSentiment } from '../actions/aws-comprehend/getBatchTextSentiment';
+import { SentimentType } from '../enums/SentimentType';
 
 export const getBusinessHandler = async (req: Request, res: Response) => {
   const { SERP_API_KEY } = process.env;
@@ -20,12 +25,34 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
     return;
   }
 
-  const responseReviews = googleBusinessReviews.reviews.map(
-    (googleBusinessReview) => ({
+  const responseReviews: Review[] = [];
+
+  const reviewsWithContent = googleBusinessReviews.reviews.filter(
+    (item) => item.content !== null,
+  );
+
+  const sentiments = await getBatchTextSentiment(
+    reviewsWithContent.map((item) => item.content),
+  );
+
+  responseReviews.push(
+    ...reviewsWithContent.map((googleBusinessReview, index) => ({
       content: googleBusinessReview.content,
       googleRating: googleBusinessReview.rating,
-      sentimentScore: null, // TODO
-    }),
+      sentimentScore: sentiments[index] as SentimentType,
+    })),
+  );
+
+  const reviewsWithoutContent = googleBusinessReviews.reviews.filter(
+    (item) => item.content === null,
+  );
+
+  responseReviews.push(
+    ...reviewsWithoutContent.map((googleBusinessReview) => ({
+      content: googleBusinessReview.content,
+      googleRating: googleBusinessReview.rating,
+      sentimentScore: null,
+    })),
   );
 
   const response: GetBusinessHandlerResponse = {
