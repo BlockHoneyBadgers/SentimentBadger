@@ -7,6 +7,7 @@ export const useCompanySentiment = () => {
   });
 
   return {
+    address: data?.address || '',
     googleDataId: data?.googleDataId || '',
     googleRatingAvg: data?.googleRatingAvg || null,
     yelpRatingAvg: data?.yelpRatingAvg || null,
