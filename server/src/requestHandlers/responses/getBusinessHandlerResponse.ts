@@ -8,9 +8,15 @@ export type Review = {
   source: RatingSource;
 };
 
+export type KeyWord = {
+  text: string;
+  count: number;
+};
+
 export type GetBusinessHandlerResponse = {
   googleRatingAvg: number;
   yelpRatingAvg: number;
   name: string;
   reviews: Review[];
+  keyWords: KeyWord[];
 };
