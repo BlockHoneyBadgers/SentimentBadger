@@ -2,17 +2,21 @@ import { ResponsiveBar } from '@nivo/bar';
 
 import { Wrapper } from './barChart.styles';
 import { Review } from '../../../data/models/review';
+import { Source } from '../../../data/enums/Source';
 
 type Props = {
   reviews: Review[];
+  source: Source;
 };
 
-export const BarChart = ({ reviews }: Props) => {
+export const BarChart = ({ reviews, source }: Props) => {
   const rateGroups = reviews.reduce(
     (acc, review) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      acc[`${review.googleRating}`]++;
+      if (source === review.source) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        acc[`${review.rating}`]++;
+      }
 
       return acc;
     },

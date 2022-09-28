@@ -5,4 +5,5 @@ export type CompanySentimentResponse = {
   googleRatingAvg: number;
   name: string;
   reviews: Review[];
+  yelpRatingAvg: number;
 };

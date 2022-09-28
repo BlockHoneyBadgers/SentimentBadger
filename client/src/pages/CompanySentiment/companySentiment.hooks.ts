@@ -2,12 +2,14 @@ import { useCompanySentimentQuery } from 'pages/CompanySentiment/companySentimen
 
 export const useCompanySentiment = () => {
   const { data, isLoading } = useCompanySentimentQuery({
-    googleDataId: '0x89c25ab8812bdd5b:0x9e8e59a7e6e4c6d4',
+    googleId: '0x89c25bfb206097cb:0x3b4acbe9958aff5a',
+    yelpId: 'uVViEXfGrA9CO9Tc3ku6eQ',
   });
 
   return {
     googleDataId: data?.googleDataId || '',
     googleRatingAvg: data?.googleRatingAvg || null,
+    yelpRatingAvg: data?.yelpRatingAvg || null,
     name: data?.name || '',
     reviews: data?.reviews || [],
     isLoading,

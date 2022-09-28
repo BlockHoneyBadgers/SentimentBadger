@@ -12,8 +12,8 @@ export const companySentimentApi = createApi({
       CompanySentimentResponse,
       CompanySentimentRequest
     >({
-      query: ({ googleDataId }) =>
-        `${process.env.REACT_APP_API_PATH}/business/${googleDataId}`,
+      query: ({ googleId, yelpId }) =>
+        `${process.env.REACT_APP_API_PATH}/business/${googleId}/${yelpId}`,
     }),
   }),
 });

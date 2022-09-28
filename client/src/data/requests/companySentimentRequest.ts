@@ -1,3 +1,4 @@
 export type CompanySentimentRequest = {
-  googleDataId: string;
+  googleId: string;
+  yelpId: string;
 };

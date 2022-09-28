@@ -1,7 +1,9 @@
 import { Sentiment } from '../enums/CurrentState';
+import { Source } from '../enums/Source';
 
 export type Review = {
   content: string;
-  googleRating: number;
+  rating: number;
   sentimentScore: Sentiment | null;
+  source: Source;
 };
