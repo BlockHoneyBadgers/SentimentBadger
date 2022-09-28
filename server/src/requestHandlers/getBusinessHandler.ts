@@ -118,7 +118,7 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
   ];
 
   const keywords = await getKeywords(
-    responseReviews.map((item) => item.content),
+    responseReviews.map((item) => item.content).filter(Boolean),
   );
 
   const response: GetBusinessHandlerResponse = {
