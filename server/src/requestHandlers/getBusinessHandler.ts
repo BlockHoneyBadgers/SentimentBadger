@@ -11,6 +11,8 @@ import { SentimentType } from '../enums/SentimentType';
 import { RatingSource } from '../enums/RatingSource';
 import { GetYelpPlaceResponse } from '../actions/yelp/responses/GetYelpPlaceResponse';
 import { getYelpPlace } from '../actions/yelp/getYelpPlace';
+import { GetYelpReviewsResponse } from '../actions/yelp/responses/GetYelpReviewsResponse';
+import { getYelpReviews } from '../actions/yelp/getYelpReviews';
 
 export const getBusinessHandler = async (req: Request, res: Response) => {
   const { SERP_API_KEY } = process.env;
@@ -36,38 +38,77 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
     return;
   }
 
-  const responseReviews: Review[] = [];
+  let yelpReviews: GetYelpReviewsResponse;
+  try {
+    yelpReviews = await getYelpReviews(req.params.yelpId);
+  } catch (e) {
+    res.status(404).json({ message: 'Business details not found' });
+    return;
+  }
 
-  const reviewsWithContent = googleReviews.reviews.filter(
-    (item) => item.content !== null,
-  );
+  const processedGoogleReviews = async () => {
+    const proessedGoogleReviews: Review[] = [];
 
-  const sentiments = await getBatchTextSentiment(
-    reviewsWithContent.map((item) => item.content),
-  );
+    const googleReviewsWithContent = googleReviews.reviews.filter(
+      (item) => item.content !== null,
+    );
 
-  responseReviews.push(
-    ...reviewsWithContent.map((googleBusinessReview, index) => ({
-      content: googleBusinessReview.content,
-      rating: googleBusinessReview.rating,
-      source: RatingSource.GOOGLE,
+    const sentiments = await getBatchTextSentiment(
+      googleReviewsWithContent.map((item) => item.content),
+    );
 
-      sentimentScore: sentiments[index] as SentimentType,
-    })),
-  );
+    proessedGoogleReviews.push(
+      ...googleReviewsWithContent.map((googleBusinessReview, index) => ({
+        content: googleBusinessReview.content,
+        rating: googleBusinessReview.rating,
+        source: RatingSource.GOOGLE,
 
-  const reviewsWithoutContent = googleReviews.reviews.filter(
-    (item) => item.content === null,
-  );
+        sentimentScore: sentiments[index] as SentimentType,
+      })),
+    );
 
-  responseReviews.push(
-    ...reviewsWithoutContent.map((googleBusinessReview) => ({
-      content: googleBusinessReview.content,
-      rating: googleBusinessReview.rating,
-      source: RatingSource.GOOGLE,
-      sentimentScore: null,
-    })),
-  );
+    const googleReviewsWithoutContent = googleReviews.reviews.filter(
+      (item) => item.content === null,
+    );
+
+    proessedGoogleReviews.push(
+      ...googleReviewsWithoutContent.map((googleBusinessReview) => ({
+        content: googleBusinessReview.content,
+        rating: googleBusinessReview.rating,
+        source: RatingSource.GOOGLE,
+        sentimentScore: null,
+      })),
+    );
+
+    return proessedGoogleReviews;
+  };
+
+  const processedYelpReviews = async () => {
+    const proessedYelpReviews: Review[] = [];
+
+    const originalYelpReviews = yelpReviews.reviews;
+
+    const sentiments = await getBatchTextSentiment(
+      originalYelpReviews.map((item) => item.content),
+    );
+
+    proessedYelpReviews.push(
+      ...originalYelpReviews.map((yelpReview, index) => ({
+        content: yelpReview.content,
+        rating: yelpReview.rating,
+        source: RatingSource.YELP,
+
+        sentimentScore: sentiments[index] as SentimentType,
+      })),
+    );
+
+    return proessedYelpReviews;
+  };
+
+  const responseReviews = [
+    ...(await processedGoogleReviews()),
+    ...(await processedYelpReviews()),
+  ];
 
   const response: GetBusinessHandlerResponse = {
     googleRatingAvg: googleReviews.business.rating,
