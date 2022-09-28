@@ -9,6 +9,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableSortLabel,
   TableContainer,
   TableHead,
   TableRow,
@@ -23,23 +24,19 @@ import { RadarChart } from '../../common/components/RadarChart/RadarChart';
 import { Source } from '../../data/enums/Source';
 
 export const CompanySentiment = () => {
-  const { isLoading, name, googleRatingAvg, reviews, yelpRatingAvg } =
+  const { address, isLoading, name, googleRatingAvg, reviews, yelpRatingAvg } =
     useCompanySentiment();
 
   if (!!isLoading) return <CircularProgress />;
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="h3" component="h2">
-          Contractor vetting dashboard
-        </Typography>
-      </Grid>
       <Grid item xs={12} md={8}>
         <Card variant="outlined" style={{ minHeight: '210px' }}>
-          <CardHeader title="Contractor Name" />
+          <CardHeader title="Company Name" />
           <CardContent>
             <Typography variant="h4">{name}</Typography>
+            <Typography>{address}</Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -105,7 +102,9 @@ export const CompanySentiment = () => {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Rating</TableCell>
+                    <TableCell>
+                      <TableSortLabel>Rating</TableSortLabel>
+                    </TableCell>
                     <TableCell>Sentiment Score</TableCell>
                     <TableCell>Source</TableCell>
                     <TableCell>Content</TableCell>
