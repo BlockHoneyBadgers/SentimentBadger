@@ -13,7 +13,7 @@ interface IObjectKeys {
   [key: string]: { text: string; count: number; type: string };
 }
 
-export const getKeyWords = async (texts: string[]) => {
+export const getKeywords = async (texts: string[]) => {
   const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
 
   if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_REGION) {
@@ -57,20 +57,20 @@ export const getKeyWords = async (texts: string[]) => {
         map[text].count += 1;
       } else {
         map[text] = {
-          text: text,
+          text,
           type: item.PartOfSpeech.Tag,
           count: 1,
         };
       }
     });
 
-    const filteredKeyWords = 
-      Object.values(map).filter(
-        (item) => item.type === 'ADJ' && item.count > 2,
-      );
+    const filteredKeywords = Object.values(map).filter(
+      (item) => item.type === 'ADJ' && item.count > 2,
+    );
 
-    return filteredKeyWords.map(item => ({
-      text: item.text, count: item.count
+    return filteredKeywords.map((item) => ({
+      text: item.text,
+      count: item.count,
     }));
   } catch (error) {
     console.error(error);

@@ -13,7 +13,7 @@ import { GetYelpPlaceResponse } from '../actions/yelp/responses/GetYelpPlaceResp
 import { getYelpPlace } from '../actions/yelp/getYelpPlace';
 import { GetYelpReviewsResponse } from '../actions/yelp/responses/GetYelpReviewsResponse';
 import { getYelpReviews } from '../actions/yelp/getYelpReviews';
-import { getKeyWords } from '../actions/aws-comprehend/getKeyWords';
+import { getKeywords } from '../actions/aws-comprehend/getKeywords';
 
 export const getBusinessHandler = async (req: Request, res: Response) => {
   const { SERP_API_KEY } = process.env;
@@ -111,7 +111,7 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
     ...(await processedYelpReviews()),
   ];
 
-  const keyWords = await getKeyWords(
+  const keywords = await getKeywords(
     responseReviews.map((item) => item.content),
   );
 
@@ -121,7 +121,7 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
     name: googleReviews.business.name,
     address: googleReviews.business.address,
     reviews: responseReviews,
-    keyWords,
+    keywords,
   };
 
   res.json(response);

@@ -8,7 +8,7 @@ export type Review = {
   source: RatingSource;
 };
 
-export type KeyWord = {
+export type Keyword = {
   text: string;
   count: number;
 };
@@ -19,5 +19,5 @@ export type GetBusinessHandlerResponse = {
   name: string;
   address: string;
   reviews: Review[];
-  keyWords: KeyWord[];
+  keywords: Keyword[];
 };
