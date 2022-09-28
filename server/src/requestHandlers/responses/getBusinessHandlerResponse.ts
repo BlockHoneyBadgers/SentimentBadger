@@ -12,5 +12,6 @@ export type GetBusinessHandlerResponse = {
   googleRatingAvg: number;
   yelpRatingAvg: number;
   name: string;
+  address: string;
   reviews: Review[];
 };

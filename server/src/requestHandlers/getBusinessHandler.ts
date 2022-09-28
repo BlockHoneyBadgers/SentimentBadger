@@ -114,6 +114,7 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
     googleRatingAvg: googleReviews.business.rating,
     yelpRatingAvg: yelpPlace.place.rating,
     name: googleReviews.business.name,
+    address: googleReviews.business.address,
     reviews: responseReviews,
   };
 
