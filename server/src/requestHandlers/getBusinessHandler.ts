@@ -26,7 +26,9 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
   let googleReviews: GetGoogleReviewsResponse;
   try {
     googleReviews = await getGoogleReviews(req.params.googleId);
-  } catch {
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(e);
     res.status(404).json({ message: 'Business details not found' });
     return;
   }
@@ -34,7 +36,9 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
   let yelpPlace: GetYelpPlaceResponse;
   try {
     yelpPlace = await getYelpPlace(req.params.yelpId);
-  } catch {
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(e);
     res.status(404).json({ message: 'Business details not found' });
     return;
   }
@@ -43,6 +47,8 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
   try {
     yelpReviews = await getYelpReviews(req.params.yelpId);
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log(e);
     res.status(404).json({ message: 'Business details not found' });
     return;
   }

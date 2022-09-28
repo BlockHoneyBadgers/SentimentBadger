@@ -48,7 +48,7 @@ export const getGoogleReviews = async (
       throw new Error('Business details not found');
     }
 
-    nextPageToken = fetchedPage.serpapi_pagination.next_page_token;
+    nextPageToken = fetchedPage?.serpapi_pagination?.next_page_token;
 
     if (!fetchedBusiness && fetchedPage.place_info) {
       fetchedBusiness = {
