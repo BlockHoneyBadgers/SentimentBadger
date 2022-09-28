@@ -25,7 +25,11 @@ Local `.env` file:
 
 ```
 PORT=3456
-SERP_API_KEY={your SerpApi Key}
+SERP_API_KEY=
+YELP_API_KEY=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=
 ```
 
 ## `/client`

@@ -1,14 +1,16 @@
+import { RatingSource } from '../../enums/RatingSource';
 import { SentimentType } from '../../enums/SentimentType';
 
 export type Review = {
   content: string | null;
-  googleRating: number;
+  rating: number;
   sentimentScore: SentimentType | null;
+  source: RatingSource;
 };
 
 export type GetBusinessHandlerResponse = {
-  googleDataId: string;
   googleRatingAvg: number;
+  yelpRatingAvg: number;
   name: string;
   reviews: Review[];
 };

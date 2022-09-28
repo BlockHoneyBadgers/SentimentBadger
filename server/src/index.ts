@@ -17,7 +17,7 @@ const { PORT } = process.env;
 const expressApp = express();
 expressApp.use(cors());
 expressApp.use(express.static(path.join(__dirname, 'public')));
-expressApp.get('/api/business/:id', getBusinessHandler);
+expressApp.get('/api/business/:googleId/:yelpId', getBusinessHandler);
 
 const httpServer = http.createServer(expressApp);
 httpServer.listen(PORT, () => {

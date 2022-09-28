@@ -1,4 +1,4 @@
-export type GoogleBusinessReview = {
+export type GoogleReview = {
   content: string | null;
   rating: number;
 };

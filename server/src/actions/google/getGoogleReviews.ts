@@ -2,15 +2,15 @@
 import SerpApi from 'google-search-results-nodejs';
 
 import { GoogleBusiness } from '../../types/GoogleBusiness';
-import { GoogleBusinessReview } from '../../types/GoogleBusinessReview';
-import { GetBusinessReviewsResponse } from './responses/GetBusinessReviewsResponse';
+import { GoogleReview } from '../../types/GoogleReview';
+import { GetGoogleReviewsResponse } from './responses/GetGoogleReviewsResponse';
 
 const MAX_PAGES = 100;
 const GOOGLE_SEARCH_ENGINE = 'google_maps_reviews';
 
-export const getBusinessReviews = async (
+export const getGoogleReviews = async (
   googleDataId: string,
-): Promise<GetBusinessReviewsResponse> => {
+): Promise<GetGoogleReviewsResponse> => {
   const { SERP_API_KEY } = process.env;
 
   const search = new SerpApi.GoogleSearch(SERP_API_KEY);
@@ -22,7 +22,7 @@ export const getBusinessReviews = async (
   let nextPageToken: string | null = null;
 
   let fetchedBusiness: GoogleBusiness | null = null;
-  const fetchedReviews: GoogleBusinessReview[] = [];
+  const fetchedReviews: GoogleReview[] = [];
 
   for (let i = MAX_PAGES; i >= 0; i -= 1) {
     const fetchReviewsPage = (pageToken: string | null): any => {

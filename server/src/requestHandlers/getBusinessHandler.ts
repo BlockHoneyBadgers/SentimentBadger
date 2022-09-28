@@ -4,10 +4,13 @@ import {
   GetBusinessHandlerResponse,
   Review,
 } from './responses/getBusinessHandlerResponse';
-import { getBusinessReviews } from '../actions/google/getBusinessReviews';
-import { GetBusinessReviewsResponse } from '../actions/google/responses/GetBusinessReviewsResponse';
+import { getGoogleReviews } from '../actions/google/getGoogleReviews';
+import { GetGoogleReviewsResponse } from '../actions/google/responses/GetGoogleReviewsResponse';
 import { getBatchTextSentiment } from '../actions/aws-comprehend/getBatchTextSentiment';
 import { SentimentType } from '../enums/SentimentType';
+import { RatingSource } from '../enums/RatingSource';
+import { GetYelpPlaceResponse } from '../actions/yelp/responses/GetYelpPlaceResponse';
+import { getYelpPlace } from '../actions/yelp/getYelpPlace';
 
 export const getBusinessHandler = async (req: Request, res: Response) => {
   const { SERP_API_KEY } = process.env;
@@ -17,9 +20,17 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
     return;
   }
 
-  let googleBusinessReviews: GetBusinessReviewsResponse;
+  let googleReviews: GetGoogleReviewsResponse;
   try {
-    googleBusinessReviews = await getBusinessReviews(req.params.id);
+    googleReviews = await getGoogleReviews(req.params.googleId);
+  } catch {
+    res.status(404).json({ message: 'Business details not found' });
+    return;
+  }
+
+  let yelpPlace: GetYelpPlaceResponse;
+  try {
+    yelpPlace = await getYelpPlace(req.params.yelpId);
   } catch {
     res.status(404).json({ message: 'Business details not found' });
     return;
@@ -27,7 +38,7 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
 
   const responseReviews: Review[] = [];
 
-  const reviewsWithContent = googleBusinessReviews.reviews.filter(
+  const reviewsWithContent = googleReviews.reviews.filter(
     (item) => item.content !== null,
   );
 
@@ -38,27 +49,30 @@ export const getBusinessHandler = async (req: Request, res: Response) => {
   responseReviews.push(
     ...reviewsWithContent.map((googleBusinessReview, index) => ({
       content: googleBusinessReview.content,
-      googleRating: googleBusinessReview.rating,
+      rating: googleBusinessReview.rating,
+      source: RatingSource.GOOGLE,
+
       sentimentScore: sentiments[index] as SentimentType,
     })),
   );
 
-  const reviewsWithoutContent = googleBusinessReviews.reviews.filter(
+  const reviewsWithoutContent = googleReviews.reviews.filter(
     (item) => item.content === null,
   );
 
   responseReviews.push(
     ...reviewsWithoutContent.map((googleBusinessReview) => ({
       content: googleBusinessReview.content,
-      googleRating: googleBusinessReview.rating,
+      rating: googleBusinessReview.rating,
+      source: RatingSource.GOOGLE,
       sentimentScore: null,
     })),
   );
 
   const response: GetBusinessHandlerResponse = {
-    googleDataId: googleBusinessReviews.business.dataId,
-    googleRatingAvg: googleBusinessReviews.business.rating,
-    name: googleBusinessReviews.business.name,
+    googleRatingAvg: googleReviews.business.rating,
+    yelpRatingAvg: yelpPlace.place.rating,
+    name: googleReviews.business.name,
     reviews: responseReviews,
   };
 
