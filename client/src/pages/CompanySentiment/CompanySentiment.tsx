@@ -15,6 +15,9 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { TagCloud } from 'react-tagcloud';
 
 import { useCompanySentiment } from 'pages/CompanySentiment/companySentiment.hooks';
 
@@ -24,8 +27,15 @@ import { RadarChart } from '../../common/components/RadarChart/RadarChart';
 import { Source } from '../../data/enums/Source';
 
 export const CompanySentiment = () => {
-  const { address, isLoading, name, googleRatingAvg, reviews, yelpRatingAvg } =
-    useCompanySentiment();
+  const {
+    address,
+    isLoading,
+    name,
+    googleRatingAvg,
+    keywords,
+    reviews,
+    yelpRatingAvg,
+  } = useCompanySentiment();
 
   if (!!isLoading) return <CircularProgress />;
 
@@ -91,6 +101,19 @@ export const CompanySentiment = () => {
           <CardHeader title="Reviews sentiment chart" />
           <CardContent>
             <RadarChart reviews={reviews} />
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <Card variant="outlined" style={{ minHeight: '210px' }}>
+          <CardHeader title="Popular adjectives" />
+          <CardContent>
+            <TagCloud
+              disableRandomColor
+              minSize={15}
+              maxSize={45}
+              tags={keywords}
+            />
           </CardContent>
         </Card>
       </Grid>
